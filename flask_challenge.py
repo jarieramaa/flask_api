@@ -18,26 +18,30 @@ def multiply_int(num):
     return {"error": "expected numbers, got string"}
 
 
-def calc_salary(content):
-    """This function calculates the salary of a person."""
-    salary, bonus, taxes = (
-        content.get("salary"),
-        content.get("bonus"),
-        content.get("taxes"),
-    )
-    if salary.isnumeric() and bonus.isnumeric() and taxes.isnumeric():
-        salary, bonus, taxes = int(salary), int(bonus), int(taxes)
-        return salary + bonus - taxes
-    return False
-
-
 @app.route("/salary", methods=["POST"])
 def salary_api():
     """This API gets salary information for the person.
     :return: The salary of the person."""
     content = request.args
-    result = calc_salary(content)
-    if result:
+    salary, bonus, taxes = (
+        content.get("salary"),
+        content.get("bonus"),
+        content.get("taxes"),
+    )
+    missing_fields = ""
+    if salary is None:
+        missing_fields += "salary "
+    if bonus is None:
+        missing_fields += "bonus "
+    if taxes is None:
+        missing_fields += "taxes "
+    if len(missing_fields) > 0:
+        return {
+            "error": f"3 fields expected (salary, bonus, taxes). You forgot: {missing_fields}."
+        }
+    if salary.isnumeric() and bonus.isnumeric() and taxes.isnumeric():
+        salary, bonus, taxes = int(salary), int(bonus), int(taxes)
+        result = salary + bonus - taxes
         return {"result": result}
     return {"error": "expected numbers, got strings."}
 

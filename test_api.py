@@ -23,7 +23,7 @@ def test_multiply():
 def test_api():
     """This is a test function for the API."""
 
-    my_result = requests.get(
+    my_result = requests.post(
         "http://127.0.0.1:5000/salary",
         params={
             "salary": 2500,
@@ -37,7 +37,7 @@ def test_api():
         "http://127.0.0.1:5000/salary",
         params={
             "salary": 3000,
-            "bonus": 1000,
+            # "bonus": 1000,
             "taxes": 1500,
         },
     )
