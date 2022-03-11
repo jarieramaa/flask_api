@@ -13,8 +13,6 @@ app = Flask(__name__)
 @app.route("/multiply/<num>", methods=["GET", "POST"])
 def multiply_int(num):
     """This function multiplies the number by 2."""
-    if request.method not in ("GET", "POST"):
-        return {"error": "content type not supported."}, 405
     if num.isnumeric():
         return {"value": float(num) * 2}
     return {"error": "expected numbers, got string"}
@@ -33,12 +31,10 @@ def calc_salary(content):
     return False
 
 
-@app.route("/salary", methods=["POST", "GET"])
+@app.route("/salary", methods=["POST"])
 def salary_api():
     """This API gets salary information for the person.
     :return: The salary of the person."""
-    if request.method not in ("GET", "POST"):
-        return {"error": "content type not supported."}, 405
     content = request.args
     result = calc_salary(content)
     if result:
